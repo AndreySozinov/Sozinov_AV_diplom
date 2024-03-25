@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Поле</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1 th:text="${message}"></h1>
+</header>
+<nav>
+    <h3>Информация о поле</h3>
+    <p>ID поля<br>
+    <p th:text="${field.getId()}"></p>
+    <p>Хозяйство<br>
+    <p th:text="${field.getFarm()}"></p>
+    <p>Площадь<br>
+    <p th:text="${field.getArea()}"></p>
+    <p>Почва<br>
+    <p th:text="${field.getSoil()}"></p>
+    <p>Описание<br>
+    <p th:text="${field.getDescription()}"></p>
+    <ul>
+        <li><form action="/"><button>Вернуться на главную страницу</button></form></li>
+    </ul>
+</nav>
+<footer>
+    <p>&copy; Созинов Андрей Викторович, 2024 г.</p>
+</footer>
+</body>
+</html>

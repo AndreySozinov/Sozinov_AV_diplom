@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Хозяйства</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h3 th:text="${message}">Список хозяйств</h3>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Адрес</th>
+    </tr>
+    <tr th:each="farm: ${farms}">
+        <td th:text="${farm.getId()}"></td>
+        <td th:text="${farm.getTitle()}"></td>
+        <td th:text="${farm.getAddress()}"></td>
+    </tr>
+</table>
+<ul>
+    <li><form action="/"><button>Вернуться на главную страницу</button></form></li>
+</ul>
+</nav>
+<footer>
+    <p>&copy; Созинов Андрей Викторович, 2024 г.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Новое хозяйство</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<form name="farm_form" method="post" action="/api/farm">
+    <h3>Добавление хозяйства</h3>
+    <h4>Введите данные о хозяйстве</h4>
+    <hr>
+    <p>Название<br>
+        <input type="text" name="title" size="100">
+    </p>
+    <p>Адрес<br>
+        <input type="text" name="address" size="100">
+    </p>
+    <p><input type="submit" value="Отправить">
+        <input type="reset" value="Очистить"></p>
+    <hr>
+    <p>(c) Созинов Андрей Викторович, 2024 г.</p>
+</form>
+
+</body>
+</html>

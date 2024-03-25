@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Новая точка</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<form name="point_form" method="post" action="/api/point/">
+    <h3>Добавление точки</h3>
+    <h4>Введите данные о точке отбора образца</h4>
+    <hr>
+    <p>Поле<br>
+        <input type="number" name="field" size="10">
+    </p>
+    <p>Широта, &#176с.ш.<br>
+        <input type="number" name="longitude" size="10">
+    </p>
+    <p>Долгота, &#176в.д.<br>
+        <input type="number" name="latitude" size="10">
+    </p>
+    <p>Гумус, %<br>
+        <input type="number" name="humus" size="5">
+    </p>
+    <p>Фосфор, мг/кг<br>
+        <input type="number" name="phosphorus" size="5">
+    </p>
+    <p>Калий, мг/кг<br>
+        <input type="number" name="potassium" size="4">
+    </p>
+    <p>рН, ед.<br>
+        <input type="number" name="ph" size="5">
+    </p>
+    <p>Плотность, г/см3<br>
+        <input type="number" name="density" size="4">
+    </p>
+    <p><input type="submit" value="Отправить">
+        <input type="reset" value="Очистить"></p>
+    <hr>
+    <p>(c) Созинов Андрей Викторович, 2024 г.</p>
+</form>
+
+</body>
+</html>

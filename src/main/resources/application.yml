@@ -1,0 +1,33 @@
+application:
+  soil-layer-thickness: 0.25
+  correction-coefficient:
+    crop-residue-humification: 0.008
+    particle-size-distribution: 1.0
+  nitrogen-content-in-humus: 0.05
+  recovery-coefficient:
+    soil:
+      nitrogen: 60
+      phosphorus: 10
+      potassium: 20
+    fertilizer:
+      nitrogen: 60
+      phosphorus: 15
+      potassium: 60
+    yield-removal:
+      nitrogen: 35
+      phosphorus: 15
+      potassium: 26
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mybase
+    username: mybase
+    password: secret
+#    url: jdbc:h2:mem:test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+#      ddl-auto: create
+    show-sql: true
