@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Список полей</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+    <h3 th:text="${message} ?: 'Список полей'">Список полей</h3>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="/">Главная страница</a></li>
+        <li><a th:href="@{/field_form/{farmId}(farmId=${farmId})}">Новое поле</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="info-list">
+        <h3>Информация о хозяйстве</h3>
+        <p>
+            <strong>ID хозяйства:</strong>
+            <span th:text="${farm.getFarmId()}"></span>
+        </p>
+        <p>
+            <strong>Название:</strong>
+            <span th:text="${farm.getTitle()}"></span>
+        </p>
+        <p>
+            <strong>Адрес:</strong>
+            <span th:text="${farm.getAddress()}"></span>
+        </p>
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Площадь</th>
+            <th>Почва</th>
+            <th>Описание</th>
+        </tr>
+        <tr th:each="field: ${fields}" th:attr="onclick=|window.location.href='@{/api/field/{id}(id=${field.getFieldId()})}'|" style="cursor: pointer;">
+            <td th:text="${field.getFieldId()}"></td>
+            <td th:text="${field.getArea()}"></td>
+            <td th:text="${field.getSoil()}"></td>
+            <td th:text="${field.getDescription()}"></td>
+        </tr>
+    </table>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

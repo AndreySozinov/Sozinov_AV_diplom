@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Список хозяйств</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h3 th:text="${message} ?: 'Список хозяйств'">Список хозяйств</h3>
+</header>
+<nav>
+    <ul>
+        <li><a href="/">Главная страница</a></li>
+        <li><a href="/farm_form">Новое хозяйство</a></li>
+    </ul>
+</nav>
+<main>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Адрес</th>
+        </tr>
+        <tr th:each="farm: ${farms}" th:attr="onclick=|window.location.href='@{/api/farm/{id}(id=${farm.getFarmId()})}'|" style="cursor: pointer;">
+            <td th:text="${farm.getFarmId()}"></td>
+            <td th:text="${farm.getTitle()}"></td>
+            <td th:text="${farm.getAddress()}"></td>
+        </tr>
+    </table>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

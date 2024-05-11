@@ -9,33 +9,68 @@
 </head>
 <body>
 <header>
-    <h1 th:text="${message}"></h1>
+    <h1 th:text="${message} ?: 'Дозы удобрений'"></h1>
 </header>
-<nav>
+
+<main>
     <h3>Информация о поле</h3>
-    <p>ID поля<br>
-    <p th:text="${field.getId()}"></p>
-    <p>Хозяйство<br>
-    <p th:text="${field.getFarm()}"></p>
-    <p>Площадь<br>
-    <p th:text="${field.getArea()}"></p>
-    <p>Почва<br>
-    <p th:text="${field.getSoil()}"></p>
-    <p>Описание<br>
-    <p th:text="${field.getDescription()}"></p>
-    <h3>Дозы удобрения в д.в. на прибавку урожая, кг/га</h3>
-    <p>Азот<br>
-    <p th:text="${nRate}"></p>
-    <p>Фосфор<br>
-    <p th:text="${pRate}"></p>
-    <p>Калий<br>
-    <p th:text="${kRate}"></p>
+    <p>
+        <strong>ID поля:</strong>
+        <span th:text="${field.getFieldId()} ?: '8'"></span>
+    </p>
+    <p>
+        <strong>Хозяйство:</strong>
+        <span th:text="${field.getFarm().getTitle()} ?: 'ООО Учебно-опытное хозяйство Каширинское'"></span>
+    </p>
+    <p>
+        <strong>Площадь:</strong>
+        <span th:text="${field.getArea()} ?: '245 га'"></span>
+    </p>
+    <p>
+        <strong>Почва:</strong>
+        <span th:text="${field.getSoil()} ?: 'Чернозем выщелоченный'"></span>
+    </p>
+    <p>
+        <strong>Описание:</strong>
+        <span th:text="${field.getDescription()} ?: 'Паровое поле'"></span>
+    </p>
+
+    <h3>Среднее содержание</h3>
+    <p>
+        <strong>Гумус, %:</strong>
+        <span>3,24</span>
+<!--        <span th:text="${getHumus()} ?: '3,24'"></span>-->
+    </p>
+    <p>
+        <strong>Подвижный фосфор, мг/кг:</strong>
+        <span>53,4</span>
+<!--        <span th:text="${getPhosphorus()} ?: '53,4'"></span>-->
+    </p>
+    <p>
+        <strong>Обменный калий, мг/кг:</strong>
+        <span>268</span>
+<!--        <span th:text="${getPotassium()} ?: '268'"></span>-->
+    </p>
+    <h3>Дозы удобрения в д.в. на планируемый урожай 3,0 т/га, кг/га</h3>
+    <p>
+        <strong>Азот:</strong>
+        <span th:text="${nRate} ?: '62'"></span>
+    </p>
+    <p>
+        <strong>Фосфор:</strong>
+        <span th:text="${pRate} ?: '35'"></span>
+    </p>
+    <p>
+        <strong>Калий:</strong>
+        <span th:text="${kRate} ?: '0'"></span>
+    </p>
+
     <ul>
-        <li><form action="/"><button>Вернуться на главную страницу</button></form></li>
+        <li><a href="/">Вернуться на главную страницу</a></li>
     </ul>
-</nav>
+</main>
 <footer>
-    <p>&copy; Созинов Андрей Викторович, 2024 г.</p>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
 </footer>
 </body>
 </html>

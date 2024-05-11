@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Пользователь</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+    <h1 th:text="${message} ?: 'Информация о пользователе'">Информация о пользователе</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a th:href="@{/user_update/{userId}(userId=${user.getUserId()})}">Редактировать пользователя</a></li>
+        <li><a th:href="@{/user_delete/{userId}(userId=${user.getUserId()})}" onclick="return confirm('Вы уверены?')">Удалить пользователя</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="info-list">
+        <h3>Информация о пользователе</h3>
+        <p>
+            <strong>ID пользователя:</strong>
+            <span th:text="${user.getUserID()}"></span>
+        </p>
+        <p>
+            <strong>Фамилия:</strong>
+            <span th:text="${user.getLastname()}"></span>
+        </p>
+        <p>
+            <strong>Имя:</strong>
+            <span th:text="${user.getFirstname()}"></span>
+        </p>
+        <p>
+            <strong>Отчество:</strong>
+            <span th:text="${user.getPatronymic()}"></span>
+        </p>
+        <p>
+            <strong>Телефон:</strong>
+            <span th:text="${user.getPhone()}"></span>
+        </p>
+        <p>
+            <strong>Email:</strong>
+            <span th:text="${user.getEmail()}"></span>
+        </p>
+        <p>
+            <strong>Роль пользователя:</strong>
+            <span th:text="${user.getRole()}"></span>
+        </p>
+        <p>
+            <strong>Логин:</strong>
+            <span th:text="${user.getLogin()}"></span>
+        </p>
+        <p>
+            <strong>Пароль:</strong>
+            <span th:text="${user.getPassword()}"></span>
+        </p>
+        <ul>
+            <li><a href="/">Вернуться на главную страницу</a></li>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+
+</body>
+</html>

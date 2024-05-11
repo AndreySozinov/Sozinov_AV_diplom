@@ -7,9 +7,9 @@ import ru.savrey.Sozinov_AV_diplom.model.Point;
 import java.util.List;
 
 public interface PointService {
-    Point createPoint(PointRequest request);
-    Point updatePoint(Long id, PointRequest request);
-    List<Point> getAllPointsOnField(Field field);
+    Point createPoint(Point request);
+    Point updatePoint(Long id, Point request);
+    List<Point> getAllPointsOnField(long fieldId);
     Point getPointById(Long id);
     Point deletePoint(Long id);
 }

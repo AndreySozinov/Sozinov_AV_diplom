@@ -21,6 +21,7 @@ public class UserController {
 
     private UserService userService;
 
+    //region Добавление нового пользователя
     @PostMapping
     @Operation(summary = "create new user", description = "Добавляет нового пользователя")
     public String createUser(@RequestBody UserRequest request, Model model) {
@@ -33,10 +34,12 @@ public class UserController {
         }
         model.addAttribute("message", "Пользователь добавлен");
         model.addAttribute("user", user);
-        return "user";
+        return "user/user";
     }
+    //endregion
 
-    @PutMapping(path = "/{id}")
+    //region Редактирование пользователя
+    @PostMapping(path = "/update/{id}")
     @Operation(summary = "update user", description = "Редактирует информацию пользователя")
     public String updateUser(@PathVariable long id, @RequestBody UserRequest request, Model model) {
         final User user;
@@ -48,9 +51,11 @@ public class UserController {
         }
         model.addAttribute("message", "Пользователь обновлен");
         model.addAttribute("user", user);
-        return "user";
+        return "user/user";
     }
+    //endregion
 
+    //region Список пользователей в БД
     @GetMapping(path = "/all")
     @Operation(summary = "get all users list", description = "Загружает список всех пользователей из БД")
     public String getAllUsers(Model model) {
@@ -63,9 +68,11 @@ public class UserController {
         }
         model.addAttribute("message", "Получен список пользователей");
         model.addAttribute("users", users);
-        return "users";
+        return "user/users";
     }
+    //endregion
 
+    //region Загрузка пользователя по ID из БД
     @GetMapping(path = "/{id}")
     @Operation(summary = "get user by ID", description = "Загружает пользователя из базы данных по ID")
     public String getUserInfo(@PathVariable long id, Model model) {
@@ -78,10 +85,12 @@ public class UserController {
         }
         model.addAttribute("message", "Пользователь найден");
         model.addAttribute("user", user);
-        return "user";
+        return "user/user";
     }
+    //endregion
 
-    @DeleteMapping(path = "/{id}")
+    //region Удаление пользователя из БД
+    @GetMapping(path = "/delete/{id}")
     @Operation(summary = "delete user by ID", description = "Удаляет пользователя из базы данных по ID")
     public String deleteUser(@PathVariable long id, Model model) {
         final User user;
@@ -93,6 +102,7 @@ public class UserController {
         }
         model.addAttribute("message", "Пользователь удален");
         model.addAttribute("user", user);
-        return "user";
+        return "user/user";
     }
+    //endregion
 }

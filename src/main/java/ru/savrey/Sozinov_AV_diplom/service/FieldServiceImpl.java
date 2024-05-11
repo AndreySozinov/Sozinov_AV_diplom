@@ -58,30 +58,30 @@ public class FieldServiceImpl implements FieldService{
     private double potassiumYieldRemoval;
 
     @Override
-    public Field createField(FieldRequest request) {
-        Field field = new Field(request.getFarm(), request.getArea());
-        field.setSoil(request.getSoil());
-        field.setDescription(request.getDescription());
+    public Field createField(Field newField) {
+        Field field = new Field(newField.getFarm(), newField.getArea());
+        field.setSoil(newField.getSoil());
+        field.setDescription(newField.getDescription());
         return fieldRepository.save(field);
     }
 
     @Override
-    public Field updateField(Long id, FieldRequest request) {
+    public Field updateField(Long id, Field field) {
         Field existingField = getFieldById(id);
         if (existingField == null) {
             throw new IllegalArgumentException("Поля с таким ID не существует.");
         }
-        existingField.setArea(request.getArea());
-        existingField.setSoil(request.getSoil());
-        existingField.setDescription(request.getDescription());
+        existingField.setArea(field.getArea());
+        existingField.setSoil(field.getSoil());
+        existingField.setDescription(field.getDescription());
         return fieldRepository.save(existingField);
     }
 
     @Override
-    public List<Field> getAllFieldsOnFarm(Farm farm) {
+    public List<Field> getAllFieldsOnFarm(long farmId) {
         return List.copyOf(fieldRepository.findAll()
                 .stream()
-                .filter(it -> it.getFarm() == farm)
+                .filter(it -> it.getFarm().getFarmId() == farmId)
                 .toList());
     }
 
@@ -99,56 +99,56 @@ public class FieldServiceImpl implements FieldService{
     }
 
     @Override
-    public double meanHumus(Field field) {
-        return pointService.getAllPointsOnField(field).stream()
+    public double meanHumus(long fieldId) {
+        return pointService.getAllPointsOnField(fieldId).stream()
                 .mapToDouble(Point::getHumus)
                 .average()
                 .orElse(Double.NaN);
     }
 
     @Override
-    public double meanPhosphorus(Field field) {
-        return pointService.getAllPointsOnField(field).stream()
+    public double meanPhosphorus(long fieldId) {
+        return pointService.getAllPointsOnField(fieldId).stream()
                 .mapToDouble(Point::getPhosphorus)
                 .average()
                 .orElse(Double.NaN);
     }
 
     @Override
-    public double meanPotassium(Field field) {
-        return pointService.getAllPointsOnField(field).stream()
+    public double meanPotassium(long fieldId) {
+        return pointService.getAllPointsOnField(fieldId).stream()
                 .mapToDouble(Point::getPotassium)
                 .average()
                 .orElse(Double.NaN);
     }
 
     @Override
-    public double meanPH(Field field) {
-        return pointService.getAllPointsOnField(field).stream()
-                .mapToDouble(Point::getPH)
+    public double meanPH(long fieldId) {
+        return pointService.getAllPointsOnField(fieldId).stream()
+                .mapToDouble(Point::getPh)
                 .average()
                 .orElse(Double.NaN);
     }
 
     @Override
-    public double meanDensity(Field field) {
-        return pointService.getAllPointsOnField(field).stream()
+    public double meanDensity(long fieldId) {
+        return pointService.getAllPointsOnField(fieldId).stream()
                 .mapToDouble(Point::getDensity)
                 .average()
                 .orElse(Double.NaN);
     }
 
     @Override
-    public double getPotentialYield(Field field) {
-        double nitrogenStock = meanHumus(field)
+    public double getPotentialYield(long fieldId) {
+        double nitrogenStock = meanHumus(fieldId)
                 * layerThickness
-                * meanDensity(field)
+                * meanDensity(fieldId)
                 * humificationCoeff
                 * particleSizeCoeff
                 * nitrogenInHumus
                 * 10_000;
-        double phosphorusStock = meanPhosphorus(field) * layerThickness * meanDensity(field) * 10;
-        double potassiumStock = meanPotassium(field) * layerThickness * meanDensity(field) * 10;
+        double phosphorusStock = meanPhosphorus(fieldId) * layerThickness * meanDensity(fieldId) * 10;
+        double potassiumStock = meanPotassium(fieldId) * layerThickness * meanDensity(fieldId) * 10;
 
         double yieldByN = nitrogenStock * soilNitrogenCoeff / (nitrogenYieldRemoval * 100);
         double yieldByP = phosphorusStock * soilPhosphorusCoeff / (phosphorusYieldRemoval * 100);
@@ -158,8 +158,8 @@ public class FieldServiceImpl implements FieldService{
     }
 
     @Override
-    public double getNitrogenRate(Field field, double yield) {
-        double yieldIncrease = yield - getPotentialYield(field);
+    public double getNitrogenRate(long fieldId, double yield) {
+        double yieldIncrease = yield - getPotentialYield(fieldId);
         if (yieldIncrease <= 0){
             throw new IllegalArgumentException("Азотные удобрения не требуются.");
         }
@@ -167,8 +167,8 @@ public class FieldServiceImpl implements FieldService{
     }
 
     @Override
-    public double getPhosphorusRate(Field field, double yield) {
-        double yieldIncrease = yield - getPotentialYield(field);
+    public double getPhosphorusRate(long fieldId, double yield) {
+        double yieldIncrease = yield - getPotentialYield(fieldId);
         if (yieldIncrease <= 0){
             throw new IllegalArgumentException("Фосфорные удобрения не требуются.");
         }
@@ -176,8 +176,8 @@ public class FieldServiceImpl implements FieldService{
     }
 
     @Override
-    public double getPotassiumRate(Field field, double yield) {
-        double yieldIncrease = yield - getPotentialYield(field);
+    public double getPotassiumRate(long fieldId, double yield) {
+        double yieldIncrease = yield - getPotentialYield(fieldId);
         if (yieldIncrease <= 0){
             throw new IllegalArgumentException("Калийные удобрения не требуются.");
         }

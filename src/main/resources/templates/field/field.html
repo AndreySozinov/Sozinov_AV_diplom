@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Поле</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+    <h1 th:text="${message} ?: 'Поле'">Поле</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a th:href="@{/rate/{fieldId}(fieldId=${field.getFieldId()})}">Рассчитать дозу NPK</a></li>
+        <li><a th:href="@{/api/point/all/{fieldId}(fieldId=${field.getFieldId()})}">Список точек</a></li>
+        <li><a th:href="@{/point_form/{fieldId}(fieldId=${field.getFieldId()})}">Создать новую точку</a></li>
+        <li><a th:href="@{/field_form/{farmId}(farmId=${field.getFarm().getFarmId()})}">Новое поле</a></li>
+        <li><a th:href="@{/field_update/{fieldId}(fieldId=${field.getFieldId()})}">Редактировать поле</a></li>
+        <li><a th:href="@{/field_delete/{fieldId}(fieldId=${field.getFieldId()})}" onclick="return confirm('Вы уверены?')">Удалить поле</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="info-list">
+        <h3>Информация о поле</h3>
+        <p>
+            <strong>ID поля:</strong>
+            <span th:text="${field.getFieldId()}"></span>
+        </p>
+        <p>
+            <strong>Хозяйство:</strong>
+            <span th:text="${field.getFarm().getTitle()}"></span>
+        </p>
+        <p>
+            <strong>Площадь, га:</strong>
+            <span th:text="${field.getArea()}"></span>
+        </p>
+        <p>
+            <strong>Почва:</strong>
+            <span th:text="${field.getSoil()}"></span>
+        </p>
+        <p>
+            <strong>Описание:</strong>
+            <span th:text="${field.getDescription()}"></span>
+        </p>
+        <p>
+            <strong>Гумус, %:</strong>
+            <span th:text="${humus}"></span>
+        </p>
+        <p>
+            <strong>Фосфор подвижный, мг/кг:</strong>
+            <span th:text="${phosphorus}"></span>
+        </p>
+        <p>
+            <strong>Калий обменный, мг/кг:</strong>
+            <span th:text="${potassium}"></span>
+        </p>
+        <p>
+            <strong>Кислотность рНсол:</strong>
+            <span th:text="${ph}"></span>
+        </p>
+        <p>
+            <strong>Плотность почвы, г/см<sup>3</sup>:</strong>
+            <span th:text="${density}"></span>
+        </p>
+        <p>
+            <strong>Потенциальная урожайность без удобрений, т/га:</strong>
+            <span th:text="${yield}"></span>
+        </p>
+        <ul>
+            <li><a href="/">Вернуться на главную страницу</a></li>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+
+</body>
+</html>

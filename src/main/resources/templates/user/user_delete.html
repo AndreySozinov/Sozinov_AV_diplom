@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Удаление пользователя</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1>Удаление пользователя</h1>
+</header>
+
+<main>
+    <form id="userDelete" name="user_delete" method="get" th:action="@{/api/user/delete/{userId}(userId=${userId})}">
+        <h3>!!!После удаления данные будут утеряны безвозвратно!!!</h3>
+        <hr>
+        <p><input type="submit" value="Удалить"></p>
+        <hr>
+    </form>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+
+</body>
+</html>

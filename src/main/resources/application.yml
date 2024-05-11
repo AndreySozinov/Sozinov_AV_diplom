@@ -19,13 +19,13 @@ application:
       potassium: 26
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mybase
-    username: mybase
-    password: secret
-    #url: jdbc:h2:mem:test
-    #username: sa
-    #password:
-    #driver-class-name: org.h2.Driver
+#    url: jdbc:postgresql://localhost:5432/mybase
+#    username: mybase
+#    password: secret
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: update

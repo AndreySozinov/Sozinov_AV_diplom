@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Новое поле</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1 th:text="${message} ?: 'Добавление поля'">Добавление поля</h1>
+</header>
+
+<main>
+    <form name="field_form" method="post" action="/api/field">
+        <h3>Введите данные о поле</h3>
+        <hr>
+        <input type="hidden" name="farmId" id="farmId" th:value="${farmId}" />
+        <p>
+            <label for="area">Площадь, га:</label>
+            <input id="area" type="number" name="area" min="0" required>
+        </p>
+        <p>
+            <label for="soil">Почва:</label>
+            <input id="soil" type="text" name="soil" size="100">
+        </p>
+        <p>
+            <label for="description">Описание:</label>
+            <input id="description" type="text" name="description" size="100">
+        </p>
+        <p><input type="submit" value="Отправить">
+            <input type="reset" value="Очистить"></p>
+        <hr>
+    </form>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>
+
+
+
+<!--<form method="post" action="/submit">-->
+<!--    <input type="hidden" name="data" id="data">-->
+<!--    <button type="submit">Отправить</button>-->
+<!--</form>-->
+
+<!--<script>-->
+<!--    var myObject = {-->
+<!--        field1: 'value1',-->
+<!--        field2: 'value2',-->
+<!--        // Другие поля и данные-->
+<!--    };-->
+
+<!--    // Преобразовываем объект в JSON и устанавливаем как значение скрытого поля-->
+<!--    document.getElementById('data').value = JSON.stringify(myObject);-->
+<!--</script>-->
+
+
+<!--<dependency>-->
+<!--    <groupId>com.google.code.gson</groupId>-->
+<!--    <artifactId>gson</artifactId>-->
+<!--    <version>2.8.8</version>-->
+<!--</dependency>-->
+
+
+<!--import com.google.gson.Gson;-->
+
+<!--public class YourServlet extends HttpServlet {-->
+<!--    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {-->
+<!--        // Получаем JSON-строку из запроса-->
+<!--        String jsonData = request.getParameter("data");-->
+
+<!--        // Создаем объект Gson-->
+<!--        Gson gson = new Gson();-->
+
+<!--        // Преобразуем JSON-строку в объект Java-->
+<!--        YourObject yourObject = gson.fromJson(jsonData, YourObject.class);-->
+
+<!--        // Далее вы можете использовать объект yourObject для дальнейшей обработки-->
+<!--    }-->
+<!--}-->

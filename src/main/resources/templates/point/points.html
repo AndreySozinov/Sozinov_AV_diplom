@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Точки</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+    <h3 th:text="${message} ?: 'Список точек'">Список точек</h3>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="/">Главная страница</a></li>
+        <li><a href="/point_form">Новая точка</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="info-list">
+        <h3>Информация о поле</h3>
+        <p>
+            <strong>ID поля:</strong>
+            <span th:text="${field.getFieldId()}"></span>
+        </p>
+        <p>
+            <strong>Хозяйство:</strong>
+            <span th:text="${field.getFarm().getTitle()}"></span>
+        </p>
+        <p>
+            <strong>Площадь, га:</strong>
+            <span th:text="${field.getArea()}"></span>
+        </p>
+        <p>
+            <strong>Почва:</strong>
+            <span th:text="${field.getSoil()}"></span>
+        </p>
+        <p>
+            <strong>Описание:</strong>
+            <span th:text="${field.getDescription()}"></span>
+        </p>
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Широта</th>
+            <th>Долгота</th>
+            <th>Дата отбора</th>
+            <th>Гумус</th>
+            <th>Фосфор</th>
+            <th>Калий</th>
+            <th>рН</th>
+            <th>Плотность</th>
+        </tr>
+        <tr th:each="point: ${points}" th:attr="onclick=|window.location.href='@{/api/point/{id}(id=${point.getPointId()})}'|" style="cursor: pointer;">
+            <td th:text="${point.getPointId()}"></td>
+            <td th:text="${point.getLatitude()}"></td>
+            <td th:text="${point.getLongitude()}"></td>
+            <td th:text="${point.getSampled_in()}"></td>
+            <td th:text="${point.getHumus()}"></td>
+            <td th:text="${point.getPhosphorus()}"></td>
+            <td th:text="${point.getPotassium()}"></td>
+            <td th:text="${point.getPh()}"></td>
+            <td th:text="${point.getDensity()}"></td>
+        </tr>
+    </table>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

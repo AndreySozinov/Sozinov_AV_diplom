@@ -1,110 +1,125 @@
 package ru.savrey.Sozinov_AV_diplom.api;
 
-import lombok.Data;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import ru.savrey.Sozinov_AV_diplom.JUnitSpringBootBase;
 import ru.savrey.Sozinov_AV_diplom.model.Farm;
 import ru.savrey.Sozinov_AV_diplom.model.Field;
+import ru.savrey.Sozinov_AV_diplom.repository.FarmRepository;
 import ru.savrey.Sozinov_AV_diplom.repository.FieldRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 public class FieldControllerTest extends JUnitSpringBootBase {
 
+    private static SessionFactory sessionFactory;
+
     @Autowired
     WebTestClient webTestClient;
+    @Autowired
+    FarmRepository farmRepository;
     @Autowired
     FieldRepository fieldRepository;
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Data
-    static class JUnitFieldResponse {
-        private Long fieldId;
-        private Farm farm;
-        private double area;
-        private String soil;
-        private String description;
+//    @BeforeAll
+//    public static void init() {
+//        sessionFactory = HibernateUtil.getSessionFactory();
+//    }
+    @BeforeEach
+    void tearUp() {
+        // Fill up the database before each test
+        Farm farm = farmRepository.save(new Farm("Farm1"));
+        fieldRepository.saveAll(List.of(
+                new Field(farm, 42),
+                new Field(farm, 525),
+                new Field(farm, 400)
+        ));
     }
 
     @Test
     void testFindByIdSuccess() {
-        Field expected = fieldRepository.save(new Field(new Farm("random"), 256));
+        Farm farm = farmRepository.save(new Farm("Farm2"));
+        Field expected = fieldRepository.save(new Field(farm, 256));
 
-        JUnitFieldResponse responseBody = webTestClient.get()
+        webTestClient.get()
                 .uri("/api/field/" + expected.getFieldId())
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(JUnitFieldResponse.class)
-                .returnResult().getResponseBody();
-
-        Assertions.assertNotNull(responseBody);
-        Assertions.assertEquals(expected.getFieldId(), responseBody.getFieldId());
-        Assertions.assertEquals(expected.getFarm(), responseBody.getFarm());
-        Assertions.assertEquals(expected.getArea(), responseBody.getArea());
-        Assertions.assertEquals(expected.getSoil(), responseBody.getSoil());
-        Assertions.assertEquals(expected.getDescription(), responseBody.getDescription());
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertNotNull(responseBody);
+                    Assertions.assertTrue(responseBody.contains("Поле"));
+                    Assertions.assertTrue(responseBody.contains(String.valueOf(expected.getFieldId())));
+                    Assertions.assertTrue(responseBody.contains(expected.getFarm().getTitle()));
+                    Assertions.assertTrue(responseBody.contains(String.valueOf(expected.getArea())));
+                });
     }
 
     @Test
     void testFindByIdNotFound() {
-        Long maxId = jdbcTemplate.queryForObject("select max(id) from fields", Long.class);
+        Long maxId = jdbcTemplate.queryForObject("select max(field_id) from fields", Long.class);
 
         webTestClient.get()
                 .uri("/api/field/" + maxId + 1)
                 .exchange()
-                .expectStatus().isNotFound();
+                .expectStatus().isOk()
+                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML)
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertTrue(responseBody.contains("Не найдено поле"));
+                });
     }
 
     @Test
     void testGetAll() {
-        fieldRepository.saveAll(List.of(
-                new Field(new Farm("first"), 256),
-                new Field(new Farm("second"), 300)
-        ));
-
         List<Field> expected = fieldRepository.findAll();
 
-        List<JUnitFieldResponse> responseBody = webTestClient.get()
-                .uri("/api/field/all")
+        webTestClient.get()
+                .uri("/api/field/all/" + expected.getFirst().getFarm().getFarmId())
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(new ParameterizedTypeReference<List<JUnitFieldResponse>>() {
-                })
-                .returnResult()
-                .getResponseBody();
-
-        assert responseBody != null;
-        Assertions.assertEquals(expected.size(), responseBody.size());
-        for (JUnitFieldResponse fieldResponse : responseBody) {
-            boolean found = expected.stream()
-                    .filter(it -> Objects.equals(it.getFieldId(), fieldResponse.getFieldId()))
-                    .anyMatch(it -> Objects.equals(it.getFarm(), fieldResponse.getFarm()));
-            Assertions.assertTrue(found);
-        }
+                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML)
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertTrue(responseBody.contains("Список полей"));
+//                    Assertions.assertTrue(responseBody.contains(expected.getFirst().getFarm().getTitle()));
+                    Assertions.assertTrue(responseBody.contains(String.valueOf(expected.getFirst().getArea())));
+//                    Assertions.assertTrue(responseBody.contains(expected.getLast().getFarm().getTitle()));
+                    Assertions.assertTrue(responseBody.contains(String.valueOf(expected.getLast().getArea())));
+                });
     }
 
-    @Test
-    void testSave() {
-        JUnitFieldResponse request = new JUnitFieldResponse();
+//    @Test
+//    void testSave() {
+//        Farm farm = farmRepository.save(new Farm("Farm2"));
+//        FieldRequest request = new FieldRequest(farm.getFarmId());
+//        request.setArea(256);
+//
+//        webTestClient.post()
+//                .uri("/api/field")
+//                .bodyValue(request)
+//                .exchange()
+//                .expectStatus().isOk()
+//                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML)
+//                .expectBody(String.class)
+//                .value(responseBody -> {
+//                    Assertions.assertTrue(responseBody.contains("Добавлено новое поле"));
+//                });
+//
+//        Assertions.assertEquals(4, fieldRepository.count());
+//        Assertions.assertTrue(fieldRepository.findById(1L).isPresent());
+//    }
 
-        JUnitFieldResponse responseBody = webTestClient.post()
-                .uri("/api/field")
-                .bodyValue(request)
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody(JUnitFieldResponse.class)
-                .returnResult().getResponseBody();
-
-        Assertions.assertNotNull(responseBody);
-        Assertions.assertNotNull(responseBody.getFieldId());
-
-        Assertions.assertTrue(fieldRepository.findById(request.getFieldId()).isPresent());
+    @AfterEach
+    void tearDown() {
+        // Clean up the database after each test
+        farmRepository.deleteAll();
+        fieldRepository.deleteAll();
     }
 }

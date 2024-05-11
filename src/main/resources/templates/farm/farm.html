@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Хозяйство</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+    <h1 th:text="${message} ?: 'Хозяйство'">Хозяйство</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a th:href="@{/api/field/all/{id}(id=${farm.getFarmId()})}">Список полей</a></li>
+        <li><a th:href="@{/field_form/{farmId}(farmId=${farm.getFarmId()})}">Создать новое поле</a></li>
+        <li><a th:href="@{/farm_update/{farmId}(farmId=${farm.getFarmId()})}">Редактировать хозяйство</a></li>
+        <li><a th:href="@{/farm_delete/{farmId}(farmId=${farm.getFarmId()})}" onclick="return confirm('Вы уверены?')">Удалить хозяйство</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="info-list">
+        <h3>Информация о хозяйстве</h3>
+        <p>
+            <strong>ID хозяйства:</strong>
+            <span th:text="${farm.getFarmId()}"></span>
+        </p>
+        <p>
+            <strong>Название:</strong>
+            <span th:text="${farm.getTitle()}"></span>
+        </p>
+        <p>
+            <strong>Адрес:</strong>
+            <span th:text="${farm.getAddress()}"></span>
+        </p>
+        <ul>
+            <li><a href="/">Вернуться на главную страницу</a></li>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+
+</body>
+</html>

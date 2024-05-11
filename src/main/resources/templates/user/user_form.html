@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Новый пользователь</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1 th:text="${message} ?: 'Добавление пользователя'">Добавление пользователя</h1>
+</header>
+
+<main>
+    <form name="user_form" method="post" action="/api/user">
+        <h3>Введите данные о пользователе</h3>
+        <hr>
+        <p>
+            <label for="lastname">Фамилия:</label>
+            <input id="lastname" type="text" name="lastname" size="20" required>
+        </p>
+        <p>
+            <label for="firstname">Имя:</label>
+            <input id="firstname" type="text" name="firstname" size="20">
+        </p>
+        <p>
+            <label for="patronymic">Отчество:</label>
+            <input id="patronymic" type="text" name="patronymic" size="20">
+        </p>
+        <p>
+            <label for="phone">Телефон:</label>
+            <input id="phone" type="text" name="phone" size="20">
+        </p>
+        <p>
+            <label for="email">Email:</label>
+            <input id="email" type="email" name="email" size="20">
+        </p>
+        <p>
+            <label for="role">Роль:</label>
+            <input id="role" type="text" name="role" required>
+        </p>
+        <p>
+            <label for="login">Логин:</label>
+            <input id="login" type="text" name="login" size="20" required>
+        </p>
+        <p>
+            <label for="password">Пароль:</label>
+            <input id="password" type="password" name="password" size="20" required>
+        </p>
+        <p><input type="submit" value="Отправить">
+            <input type="reset" value="Очистить"></p>
+        <hr>
+    </form>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

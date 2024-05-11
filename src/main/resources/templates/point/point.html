@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Точка</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+    <h1 th:text="${message} ?: 'Информация о точке'">Информация о точке</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a th:href="@{/point_form/{fieldId}(fieldId=${point.getField().getFieldId()})}">Создать новую точку</a></li>
+        <li><a th:href="@{/point_update/{pointId}(pointId=${point.getPointId()})}">Редактировать точку</a></li>
+        <li><a th:href="@{/point_delete/{pointId}(pointId=${point.getPointId()})}" onclick="return confirm('Вы уверены?')">Удалить точку</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="info-list">
+        <h3>Информация о точке</h3>
+        <p>
+            <strong>ID точки:</strong>
+            <span th:text="${point.getPointId()}"></span>
+        </p>
+        <p>
+            <strong>Поле:</strong>
+            <span th:text="${point.getField().getFieldId()}"></span>
+        </p>
+        <p>
+            <strong>Широта, &#176с.ш.:</strong>
+            <span th:text="${point.getLatitude()}"></span>
+        </p>
+        <p>
+            <strong>Долгота, &#176в.д.:</strong>
+            <span th:text="${point.getLongitude()}"></span>
+        </p>
+        <p>
+            <strong>Дата отбора:</strong>
+            <span th:text="${point.getSampled_in()}"></span>
+        </p>
+        <p>
+            <strong>Гумус, %:</strong>
+            <span th:text="${point.getHumus()}"></span>
+        </p>
+        <p>
+            <strong>Подвижный фосфор, мг/кг:</strong>
+            <span th:text="${point.getPhosphorus()}"></span>
+        </p>
+        <p>
+            <strong>Обменный калий, мг/кг:</strong>
+            <span th:text="${point.getPotassium()}"></span>
+        </p>
+        <p>
+            <strong>рН, ед.:</strong>
+            <span th:text="${point.getPh()}"></span>
+        </p>
+        <p>
+            <strong>Плотность, г/см<sup>3</sup>:</strong>
+            <span th:text="${point.getDensity()}"></span>
+        </p>
+        <ul>
+            <li><a href="/">Вернуться на главную страницу</a></li>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Редакция хозяйства</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1 th:text="${message} ?: 'Редактирование хозяйства'">Редактирование хозяйства</h1>
+</header>
+
+<main>
+    <form name="farm_update" method="post" th:action="@{/api/farm/update/{farmId}(farmId=${farm.getFarmId()})}">
+        <h3>Измените данные о хозяйстве</h3>
+        <hr>
+        <p>
+            <label for="title">Название:</label>
+            <input id="title" type="text" name="title" size="100" th:value="${farm.getTitle()}">
+        </p>
+        <p>
+            <label for="address">Название:</label>
+            <input id="address" type="text" name="address" size="100" th:value="${farm.getAddress()}">
+        </p>
+        <p><input type="submit" value="Отправить">
+            <input type="reset" value="Очистить"></p>
+        <hr>
+    </form>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

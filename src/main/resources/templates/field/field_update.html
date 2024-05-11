@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Редакция поля</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1 th:text="${message} ?: 'Редактирование поля'">Редактирование поля</h1>
+</header>
+
+<main>
+    <form name="field_update" method="post" th:action="@{/api/field/update/{fieldId}(fieldId=${field.getFieldId()})}">
+        <h3>Измените данные о поле</h3>
+        <hr>
+        <input type="hidden" name="farmId" id="farmId" th:value="${field.getFarm().getFarmId()}" />
+        <p>
+            <label for="area">Площадь, га:</label>
+            <input id="area" type="number" name="area" th:value="${field.getArea()}">
+        </p>
+        <p>
+            <label for="soil">Почва:</label>
+            <input id="soil" type="text" name="soil" size="100" th:value="${field.getSoil()}">
+        </p>
+        <p>
+            <label for="description">Описание:</label>
+            <input id="description" type="text" name="description" size="100" th:value="${field.getDescription()}">
+        </p>
+        <p><input type="submit" value="Отправить">
+            <input type="reset" value="Очистить"></p>
+        <hr>
+    </form>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

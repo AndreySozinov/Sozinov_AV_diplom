@@ -2,7 +2,11 @@ package ru.savrey.Sozinov_AV_diplom.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -22,6 +26,8 @@ public class Farm {
 
     @Column(name = "title")
     @Schema(name = "Название", minLength = 4, maxLength = 100)
+    @NotBlank(message = "Название необходимо")
+    @Size(min = 5, message = "Название должно быть не короче 5 букв")
     private String title;
 
     @Column(name = "address")
@@ -31,7 +37,7 @@ public class Farm {
     @OneToMany(mappedBy = "farm",
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL)
-    List<Field> fields;
+    private List<Field> fields = new ArrayList<>();
 
     public void addField(Field field) {
         fields.add(field);

@@ -4,24 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Домашняя страница</title>
+    <title>Главная</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <header>
-    <h1>Главная</h1>
+    <h1>АгроДоз</h1>
 </header>
 <nav>
-    <h3>Доступные ресурсы</h3>
     <ul>
-        <li><form action="farms.html"><button>Список хозяйств</button></form></li>
-        <li><form action="farm_form.html"><button>Создать новое хозяйство</button></form></li>
-        <li><form action="farm_form.html"><button>Редактировать хозяйство</button></form></li>
-        <li><form action="farm_form.html"><button>Удалить хозяйство</button></form></li>
+        <li><a href="/api/farm/all">Список хозяйств</a></li>
+        <li><a href="/farm_form">Создать новое хозяйство</a></li>
     </ul>
 </nav>
+<div class="main-info">
+    <div class="justify">
+        <p>
+            Портал на котором Вы находитесь, позволяет собирать, хранить и обрабатывать
+            данные агрохимического осбледования полей Вашего хозяйства.</p>
+        <p>
+            На основе результатов анализа почвенных образцов формируется достоверное
+            представление об уровне плодородия почв хозяйства, оценивается действительно
+            возможная урожайность зерновых культур (при оптимальных погодных условиях
+            вегетационного периода и высоком уровне агротехники).
+            Рассчитываются дозы азота, фосфора и калия на планируемую урожайность.
+        </p>
+        <p>
+            Рекомендуемый период между агрохимическим обследованием полей 4-6 лет
+            (при интенсивном применении минеральных и органических удобрений,
+            период желательно сократить).
+        </p>
+    </div>
+    <div class="login-registration-container">
+        <div class="login-form">
+            <h2>Вход</h2>
+            <form name="user_login" method="post" action="/api/user_login">
+                <input type="text" name="login" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Вход</button>
+            </form>
+        </div>
+        <div class="registration-form">
+            <h2>Регистрация</h2>
+            <a href="/api/user/register">Регистрация</a>
+        </div>
+    </div>
+</div>
+
 <footer>
-    <p>&copy; Созинов Андрей Викторович, 2024 г.</p>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
 </footer>
 </body>
 </html>

@@ -3,9 +3,14 @@ package ru.savrey.Sozinov_AV_diplom.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +34,8 @@ public class Field {
 
     @Column(name = "area")
     @Schema(name = "Площадь")
+    @NotBlank(message = "Площадь обязательна")
+    @Positive(message = "Значение должно быть больше нуля")
     private int area;
 
     @Column(name = "soil")
@@ -42,7 +49,7 @@ public class Field {
     @OneToMany(mappedBy = "field",
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL)
-    List<Point> points;
+    private List<Point> points = new ArrayList<>();
 
     public void addPoint(Point point) {
         points.add(point);

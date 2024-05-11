@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Новая точка</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1 th:text="${message} ?: 'Добавление точки'">Добавление точки</h1>
+</header>
+
+<main>
+    <form name="point_form" method="post" action="/api/point">
+        <h3>Введите данные о точке отбора образца</h3>
+        <hr>
+        <input type="hidden" name="fieldId" id="fieldId" th:value="${fieldId}" />
+        <p>
+            <label for="longitude">Широта, &#176с.ш.:</label>
+            <input id="longitude" type="number" name="longitude" step="0.0000001" min="0" max="90" size="10" required>
+        </p>
+        <p>
+            <label for="latitude">Долгота, &#176в.д.:</label>
+            <input id="latitude" type="number" name="latitude" step="0.0000001" min="0" max="90" size="10" required>
+        </p>
+        <p>
+            <label for="sampled_in">Дата отбора:</label>
+            <input id="sampled_in" type="date" name="sampled_in" required>
+        </p>
+        <p>
+            <label for="humus">Гумус, %:</label>
+            <input id="humus" type="number" name="humus" step="0.01" min="0" max="20" size="5">
+        </p>
+        <p>
+            <label for="phosphorus">Фосфор, мг/кг:</label>
+            <input id="phosphorus" type="number" name="phosphorus" step="0.1" min="0" size="5">
+        </p>
+        <p>
+            <label for="potassium">Калий, мг/кг:</label>
+            <input id="potassium" type="number" name="potassium" min="0" size="4">
+        </p>
+        <p>
+            <label for="ph">рН, ед.:</label>
+            <input id="ph" type="number" name="ph" step="0.01" min="0" max="12" size="5">
+        </p>
+        <p>
+            <label for="density">Плотность, г/см<sup>3</sup>:</label>
+            <input id="density" type="number" name="density" step="0.01" min="0" max="5" size="4">
+        </p>
+        <p><input type="submit" value="Отправить">
+            <input type="reset" value="Очистить"></p>
+        <hr>
+    </form>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

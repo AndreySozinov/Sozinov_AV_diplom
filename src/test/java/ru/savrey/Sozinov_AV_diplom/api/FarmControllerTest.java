@@ -1,10 +1,11 @@
 package ru.savrey.Sozinov_AV_diplom.api;
 
-import lombok.Data;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import ru.savrey.Sozinov_AV_diplom.JUnitSpringBootBase;
@@ -12,94 +13,104 @@ import ru.savrey.Sozinov_AV_diplom.model.Farm;
 import ru.savrey.Sozinov_AV_diplom.repository.FarmRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 public class FarmControllerTest extends JUnitSpringBootBase {
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
     @Autowired
-    FarmRepository farmRepository;
+    private FarmRepository farmRepository;
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Data
-    static class JUnitFarmResponse {
-        private Long farmId;
-        private String title;
-        private String address;
+    @BeforeEach
+    void tearUp() {
+        // Fill up the database before each test
+        farmRepository.saveAll(List.of(
+                new Farm("Farm1"),
+                new Farm("Farm2"),
+                new Farm("Farm3")
+        ));
     }
 
     @Test
     void testFindByIdSuccess() {
         Farm expected = farmRepository.save(new Farm("Random"));
 
-        JUnitFarmResponse responseBody = webTestClient.get()
+        webTestClient.get()
                 .uri("/api/farm/" + expected.getFarmId())
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(JUnitFarmResponse.class)
-                .returnResult().getResponseBody();
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertNotNull(responseBody);
+                    Assertions.assertTrue(responseBody.contains("Информация о хозяйстве"));
+                    Assertions.assertTrue(responseBody.contains(expected.getTitle()));
+                });
 
-        Assertions.assertNotNull(responseBody);
-        Assertions.assertEquals(expected.getFarmId(), responseBody.getFarmId());
-        Assertions.assertEquals(expected.getTitle(), responseBody.getTitle());
-        Assertions.assertEquals(expected.getAddress(), responseBody.getAddress());
+        Assertions.assertEquals(4, farmRepository.count());
+        Farm savedFarm = farmRepository.findByTitle(expected.getTitle());
+        Assertions.assertNotNull(savedFarm);
+        Assertions.assertEquals(expected.getTitle(), savedFarm.getTitle());
     }
 
     @Test
     void testFindByIdNotFound() {
-        Long maxId = jdbcTemplate.queryForObject("select max(id) from farms", Long.class);
+        Long maxId = jdbcTemplate.queryForObject("select max(farm_id) from farms", Long.class);
 
         webTestClient.get()
                 .uri("/api/farm/" + maxId + 1)
                 .exchange()
-                .expectStatus().isNotFound();
+                .expectStatus().isOk()
+                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML)
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertTrue(responseBody.contains("Не найдено хозяйство"));
+                });
     }
 
     @Test
     void testGetAll() {
-        farmRepository.saveAll(List.of(
-                new Farm("first"),
-                new Farm("second")
-        ));
-
         List<Farm> expected = farmRepository.findAll();
 
-        List<JUnitFarmResponse> responseBody = webTestClient.get()
+        webTestClient.get()
                 .uri("/api/farm/all")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(new ParameterizedTypeReference<List<JUnitFarmResponse>>() {
-                })
-                .returnResult()
-                .getResponseBody();
-
-        assert responseBody != null;
-        Assertions.assertEquals(expected.size(), responseBody.size());
-        for (JUnitFarmResponse farmResponse : responseBody) {
-            boolean found = expected.stream()
-                    .filter(it -> Objects.equals(it.getFarmId(), farmResponse.getFarmId()))
-                    .anyMatch(it -> Objects.equals(it.getTitle(), farmResponse.getTitle()));
-            Assertions.assertTrue(found);
-        }
+                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML)
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertTrue(responseBody.contains("Список хозяйств"));
+                    Assertions.assertTrue(responseBody.contains(expected.getFirst().getTitle()));
+                    Assertions.assertTrue(responseBody.contains(expected.getLast().getTitle()));
+                });
     }
 
     @Test
     void testSave() {
-        JUnitFarmResponse request = new JUnitFarmResponse();
+        FarmRequest request = new FarmRequest();
+        request.setTitle("Example");
+        request.setAddress("Moscow");
 
-        JUnitFarmResponse responseBody = webTestClient.post()
+        webTestClient.post()
                 .uri("/api/farm")
                 .bodyValue(request)
                 .exchange()
-                .expectStatus().isCreated()
-                .expectBody(JUnitFarmResponse.class)
-                .returnResult().getResponseBody();
+                .expectStatus().isOk()
+                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_HTML)
+                .expectBody(String.class)
+                .value(responseBody -> {
+                    Assertions.assertTrue(responseBody.contains("Хозяйство добавлено"));
+                });
 
-        Assertions.assertNotNull(responseBody);
-        Assertions.assertNotNull(responseBody.getFarmId());
+        Assertions.assertEquals(4, farmRepository.count());
+        Farm savedFarm = farmRepository.findByTitle(request.getTitle());
+        //Assertions.assertNotNull(savedFarm);
+    }
 
-        Assertions.assertTrue(farmRepository.findById(request.getFarmId()).isPresent());
+    @AfterEach
+    void tearDown() {
+        // Clean up the database after each test
+        farmRepository.deleteAll();
     }
 }

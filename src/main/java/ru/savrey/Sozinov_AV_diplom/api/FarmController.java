@@ -23,6 +23,7 @@ public class FarmController {
     @Autowired
     private FarmService farmService;
 
+    //region Добавление нового хозяйства
     @PostMapping
     @Operation(summary = "create new farm", description = "Добавляет новое хозяйство")
     public String createFarm(@RequestBody FarmRequest request, Model model) {
@@ -35,10 +36,12 @@ public class FarmController {
         }
         model.addAttribute("message", "Хозяйство добавлено");
         model.addAttribute("farm", farm);
-        return "farm";
+        return "farm/farm";
     }
+    //endregion
 
-    @PutMapping(path = "/{id}")
+    //region Редактирование хозяйства
+    @PostMapping(path = "/update/{id}")
     @Operation(summary = "update farm", description = "Редактирует хозяйство")
     public String updateFarm(@PathVariable long id, @RequestBody FarmRequest request, Model model) {
         final Farm farm;
@@ -50,9 +53,11 @@ public class FarmController {
         }
         model.addAttribute("message", "Хозяйство обновлено");
         model.addAttribute("farm", farm);
-        return "farm";
+        return "farm/farm";
     }
+    //endregion
 
+    //region Список хозяйств в БД
     @GetMapping(path = "/all")
     @Operation(summary = "get all farms list", description = "Загружает список всех хозяйств из БД")
     public String getAllFarms(Model model) {
@@ -65,9 +70,11 @@ public class FarmController {
         }
         model.addAttribute("message", "Получен список хозяйств");
         model.addAttribute("farms", farms);
-        return "farms";
+        return "farm/farms";
     }
+    //endregion
 
+    //region Загрузка хозяйства по ID из БД
     @GetMapping(path = "/{id}")
     @Operation(summary = "get farm by ID", description = "Загружает хозяйство из базы данных по ID")
     public String getFarmInfo(@PathVariable long id, Model model) {
@@ -80,10 +87,12 @@ public class FarmController {
         }
         model.addAttribute("message", "Найдено хозяйство");
         model.addAttribute("farm", farm);
-        return "farm";
+        return "farm/farm";
     }
+    //endregion
 
-    @DeleteMapping(path = "/{id}")
+    //region Удаление хозяйства из БД
+    @GetMapping(path = "/delete/{id}")
     @Operation(summary = "delete farm by ID", description = "Удаляет хозяйство из базы данных по ID")
     public String deleteFarm(@PathVariable long id, Model model) {
         final Farm farm;
@@ -95,6 +104,7 @@ public class FarmController {
         }
         model.addAttribute("message", "Хозяйство удалено");
         model.addAttribute("farm", farm);
-        return "farm";
+        return "farm/farm";
     }
+    //endregion
 }

@@ -2,7 +2,11 @@ package ru.savrey.Sozinov_AV_diplom.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ru.savrey.Sozinov_AV_diplom.api.Roles;
 
@@ -20,6 +24,7 @@ public class User {
 
     @Column(name = "lastname", nullable = false)
     @Schema(name = "Фамилия", minLength = 3, maxLength = 20)
+    @NotBlank(message = "Фамилия обязательна")
     private String lastname;
 
     @Column(name = "firstname")
@@ -36,6 +41,7 @@ public class User {
 
     @Column(name = "email")
     @Schema(name = "Email", minLength = 5, maxLength = 20)
+    @Email(message = "Email некорректен")
     private String email;
 
     @Column(name = "role")

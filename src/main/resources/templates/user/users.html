@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Пользователи</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+<h3 th:text="${message} ?: 'Список пользователей'">Список пользователей</h3>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="/">Главная страница</a></li>
+        <li><a href="/user_form">Новый пользователь</a></li>
+    </ul>
+</nav>
+
+<main>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Телефон</th>
+            <th>Почта</th>
+            <th>Роль</th>
+            <th>Логин</th>
+            <th>Пароль</th>
+        </tr>
+        <tr th:each="user: ${users}" th:attr="onclick=|window.location.href='@{/api/user/{id}(id=${user.getUserId()})}'|" style="cursor: pointer;">
+            <td th:text="${user.getUserId()}"></td>
+            <td th:text="${user.getLastname()}"></td>
+            <td th:text="${user.getFirstname()}"></td>
+            <td th:text="${user.getPatronymic()}"></td>
+            <td th:text="${user.getPhone()}"></td>
+            <td th:text="${user.getEmail()}"></td>
+            <td th:text="${user.getRole()}"></td>
+            <td th:text="${user.getLogin()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+        </tr>
+    </table>
+    <ul>
+        <li><a href="/">Вернуться на главную страницу</a></li>
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

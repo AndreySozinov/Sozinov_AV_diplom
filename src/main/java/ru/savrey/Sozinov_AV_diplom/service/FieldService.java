@@ -7,26 +7,26 @@ import ru.savrey.Sozinov_AV_diplom.model.Field;
 import java.util.List;
 
 public interface FieldService {
-    Field createField(FieldRequest request);
-    Field updateField(Long id, FieldRequest request);
-    List<Field> getAllFieldsOnFarm(Farm farm);
+    Field createField(Field field);
+    Field updateField(Long id, Field field);
+    List<Field> getAllFieldsOnFarm(long farmId);
     Field getFieldById(Long id);
     Field deleteField(Long id);
 
-    double meanHumus(Field field);
+    double meanHumus(long fieldId);
 
-    double meanPhosphorus(Field field);
+    double meanPhosphorus(long fieldId);
 
-    double meanPotassium(Field field);
+    double meanPotassium(long fieldId);
 
 
-    double meanPH(Field field);
+    double meanPH(long fieldId);
 
-    double meanDensity(Field field);
+    double meanDensity(long fieldId);
 
-    double getPotentialYield(Field field);
+    double getPotentialYield(long fieldId);
 
-    double getNitrogenRate(Field field,double yield);
-    double getPhosphorusRate(Field field, double yield);
-    double getPotassiumRate(Field field, double yield);
+    double getNitrogenRate(long fieldId,double yield);
+    double getPhosphorusRate(long fieldId, double yield);
+    double getPotassiumRate(long fieldId, double yield);
 }
