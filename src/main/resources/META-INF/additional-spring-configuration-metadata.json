@@ -1,0 +1,10 @@
+{"properties": [{
+  "name": "farm.fields.page-size",
+  "type": "java.lang.Integer",
+  "description": "Sets the maximum number of fields to display in a list."
+},
+  {"name": "farm.fields.points.page-size",
+  "type": "java.lang.Integer",
+  "description": "Sets the maximum number of points to display on a list."
+  }
+]}

@@ -6,15 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.savrey.Sozinov_AV_diplom.model.Farm;
 import ru.savrey.Sozinov_AV_diplom.model.Field;
 import ru.savrey.Sozinov_AV_diplom.model.Point;
 import ru.savrey.Sozinov_AV_diplom.model.User;
-import ru.savrey.Sozinov_AV_diplom.service.FarmService;
-import ru.savrey.Sozinov_AV_diplom.service.FieldService;
-import ru.savrey.Sozinov_AV_diplom.service.PointService;
-import ru.savrey.Sozinov_AV_diplom.service.UserService;
+import ru.savrey.Sozinov_AV_diplom.service.*;
 
 import java.util.NoSuchElementException;
 
@@ -40,6 +36,10 @@ public class UIController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/login")
+    @Operation(summary = "login page", description = "Страница входа")
+    public String login() { return "login"; }
 
     //region Создание нового объекта
     @GetMapping("/farm_form")

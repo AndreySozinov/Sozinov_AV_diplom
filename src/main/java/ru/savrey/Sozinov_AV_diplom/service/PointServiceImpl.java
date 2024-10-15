@@ -1,12 +1,15 @@
 package ru.savrey.Sozinov_AV_diplom.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ru.savrey.Sozinov_AV_diplom.api.PointRequest;
 import ru.savrey.Sozinov_AV_diplom.model.Field;
 import ru.savrey.Sozinov_AV_diplom.model.Point;
 import ru.savrey.Sozinov_AV_diplom.repository.PointRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,6 +19,7 @@ public class PointServiceImpl implements PointService{
     private final PointRepository pointRepository;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public Point createPoint(Point request) {
         Point point = new Point(request.getField(),
                 request.getLatitude(),
@@ -60,6 +64,7 @@ public class PointServiceImpl implements PointService{
                 .orElseThrow(() -> new NoSuchElementException("Не найдена точка с ID \"" + id + "\""));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Point deletePoint(Long id) {
         Point point = getPointById(id);

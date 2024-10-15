@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class FarmRequest {
+    private final long userId;
     private String title;
     private String address;
 }

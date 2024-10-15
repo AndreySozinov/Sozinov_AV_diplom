@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import ru.savrey.Sozinov_AV_diplom.JUnitSpringBootBase;
 import ru.savrey.Sozinov_AV_diplom.model.Farm;
+import ru.savrey.Sozinov_AV_diplom.model.User;
 import ru.savrey.Sozinov_AV_diplom.repository.FarmRepository;
 
 import java.util.List;
@@ -27,15 +28,15 @@ public class FarmControllerTest extends JUnitSpringBootBase {
     void tearUp() {
         // Fill up the database before each test
         farmRepository.saveAll(List.of(
-                new Farm("Farm1"),
-                new Farm("Farm2"),
-                new Farm("Farm3")
+                new Farm(new User(), "Farm1"),
+                new Farm(new User(), "Farm2"),
+                new Farm(new User(), "Farm3")
         ));
     }
 
     @Test
     void testFindByIdSuccess() {
-        Farm expected = farmRepository.save(new Farm("Random"));
+        Farm expected = farmRepository.save(new Farm(new User(),"Random"));
 
         webTestClient.get()
                 .uri("/api/farm/" + expected.getFarmId())
@@ -88,7 +89,7 @@ public class FarmControllerTest extends JUnitSpringBootBase {
 
     @Test
     void testSave() {
-        FarmRequest request = new FarmRequest();
+        FarmRequest request = new FarmRequest(5L);
         request.setTitle("Example");
         request.setAddress("Moscow");
 

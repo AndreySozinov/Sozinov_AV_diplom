@@ -3,9 +3,12 @@ package ru.savrey.Sozinov_AV_diplom.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +24,11 @@ import java.util.NoSuchElementException;
 @Controller
 @RequestMapping("/api/field")
 @Tag(name = "Field")
+@ConfigurationProperties(prefix = "farm.fields")
 public class FieldController {
+
+    @Setter
+    private int pageSize = 20;
 
     @Autowired
     private FieldService fieldService;
@@ -74,6 +81,8 @@ public class FieldController {
     public String getAllFields(@PathVariable long farmId, Model model) {
         final List<Field> fields;
         final Farm farm;
+
+        Pageable pageable = PageRequest.of(0, pageSize);
 
         try {
             farm = farmService.getFarmById(farmId);

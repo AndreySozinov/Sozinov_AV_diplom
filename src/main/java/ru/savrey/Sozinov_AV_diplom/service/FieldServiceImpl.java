@@ -2,6 +2,8 @@ package ru.savrey.Sozinov_AV_diplom.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ru.savrey.Sozinov_AV_diplom.api.FieldRequest;
 import ru.savrey.Sozinov_AV_diplom.model.Farm;
@@ -58,6 +60,7 @@ public class FieldServiceImpl implements FieldService{
     private double potassiumYieldRemoval;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public Field createField(Field newField) {
         Field field = new Field(newField.getFarm(), newField.getArea());
         field.setSoil(newField.getSoil());
@@ -91,6 +94,7 @@ public class FieldServiceImpl implements FieldService{
                 .orElseThrow(() -> new NoSuchElementException("Не найдено поле с ID \"" + id + "\""));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Field deleteField(Long id) {
         Field field = getFieldById(id);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,17 +36,24 @@
         </p>
     </div>
     <div class="login-registration-container">
-        <div class="login-form">
-            <h2>Вход</h2>
-            <form name="user_login" method="post" action="/api/user_login">
-                <input type="text" name="login" placeholder="Логин" required>
-                <input type="password" name="password" placeholder="Пароль" required>
-                <button type="submit">Вход</button>
+        <div sec:authorize="!isAuthenticated()" class="greetings">Гость</div>
+        <div sec:authorize="!isAuthenticated()" class="login-form">
+            <form name="user_login" method="get" action="/login">
+                <button type="submit">Войти</button>
             </form>
         </div>
-        <div class="registration-form">
-            <h2>Регистрация</h2>
-            <a href="/api/user/register">Регистрация</a>
+        <div sec:authorize="!isAuthenticated()" class="registration-form">
+            <form name="registration" method="get" action="/register">
+                <button type="submit">Регистрация</button>
+            </form>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" class="logout">
+            <div th:text="${#authentication.getPrincipal().getLastname}" class="greetings"></div>
+            <br>
+            <form method="post" th:action="@{/logout}">
+                <button type="submit">Выйти</button>
+            </form>
         </div>
     </div>
 </div>

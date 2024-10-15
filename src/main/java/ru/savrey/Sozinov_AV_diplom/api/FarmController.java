@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.savrey.Sozinov_AV_diplom.model.Farm;
+import ru.savrey.Sozinov_AV_diplom.model.User;
 import ru.savrey.Sozinov_AV_diplom.service.FarmService;
+import ru.savrey.Sozinov_AV_diplom.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -23,19 +25,24 @@ public class FarmController {
     @Autowired
     private FarmService farmService;
 
+    @Autowired
+    private UserService userService;
+
     //region Добавление нового хозяйства
     @PostMapping
     @Operation(summary = "create new farm", description = "Добавляет новое хозяйство")
     public String createFarm(@RequestBody FarmRequest request, Model model) {
-        final Farm farm;
+        final Farm farmIncoming = farmFromUserIdToUser(request, userService);
+        Farm farmOutcoming = null;
+
         try {
-            farm = farmService.createFarm(request);
+            farmOutcoming = farmService.createFarm(farmIncoming);
         } catch (IllegalArgumentException ex) {
-            model.addAttribute("message", ex.getMessage());
+            model.addAttribute("message", "Не сохранилось хозяйство" + ex.getMessage());
             return "error";
         }
         model.addAttribute("message", "Хозяйство добавлено");
-        model.addAttribute("farm", farm);
+        model.addAttribute("farm", farmOutcoming);
         return "farm/farm";
     }
     //endregion
@@ -44,15 +51,17 @@ public class FarmController {
     @PostMapping(path = "/update/{id}")
     @Operation(summary = "update farm", description = "Редактирует хозяйство")
     public String updateFarm(@PathVariable long id, @RequestBody FarmRequest request, Model model) {
-        final Farm farm;
+        final Farm farmIncoming = farmFromUserIdToUser(request, userService);
+        Farm farmOutcoming = null;
+
         try {
-            farm = farmService.updateFarm(id, request);
+            farmOutcoming = farmService.updateFarm(id, farmIncoming);
         } catch (IllegalArgumentException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }
         model.addAttribute("message", "Хозяйство обновлено");
-        model.addAttribute("farm", farm);
+        model.addAttribute("farm", farmOutcoming);
         return "farm/farm";
     }
     //endregion
@@ -107,4 +116,25 @@ public class FarmController {
         return "farm/farm";
     }
     //endregion
+
+    /**
+     * Заменяет поле userId объекта FarmRequest на поле User в объекте Farm
+     * @param farmRequest объект класса FarmRequest с полем userId типа long
+     * @param service объект класса UserService
+     * @return объект Farm, готовый для сохранения в депозитории
+     */
+    private Farm farmFromUserIdToUser(FarmRequest farmRequest, UserService service) {
+        final User user;
+        try {
+            user = service.getUserById(farmRequest.getUserId());
+            System.out.println("Получили пользователя с ID: " + farmRequest.getUserId());
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Не удалось найти пользователя с таким userId " + ex.getMessage());
+            return null;
+        }
+
+        Farm farm = new Farm(user, farmRequest.getTitle());
+        farm.setAddress(farmRequest.getAddress());
+        return farm;
+    }
 }

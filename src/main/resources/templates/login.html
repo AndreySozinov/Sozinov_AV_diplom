@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Логин</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1>Вход</h1>
+</header>
+
+<div class="main-info">
+    <div class="justify">
+
+        <div th:if="${error}">
+            Войти не получилось. Проверьте ваш логин и пароль.
+        </div>
+
+        <p>Еще не зарегистрированы? Нажмите
+            <a th:href="@{/register}">здесь</a> для регистрации.</p>
+
+        <form method="post" th:action="@{/login}" id="loginForm">
+            <label for="login">Логин: </label>
+            <input type="text" name="login" id="login" placeholder="Логин" required /><br/>
+
+            <label for="password">Пароль: </label>
+            <input type="password" name="password" id="password" placeholder="Пароль" required /><br/>
+
+            <input type="submit" value="Войти"/>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; Созинов А.В., Плотников А.М., 2024</p>
+</footer>
+</body>
+</html>

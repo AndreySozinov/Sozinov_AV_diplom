@@ -1,12 +1,11 @@
 package ru.savrey.Sozinov_AV_diplom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -34,6 +33,12 @@ public class Farm {
     @Schema(name = "Адрес", minLength = 3, maxLength = 100)
     private String address;
 
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    @Schema(name = "ID пользователя")
+    private User user;
+
     @OneToMany(mappedBy = "farm",
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL)
@@ -49,7 +54,8 @@ public class Farm {
         field.setFarm(null);
     }
 
-    public Farm(String title) {
+    public Farm(User user, String title) {
+        this.user = user;
         this.title = title;
     }
 }

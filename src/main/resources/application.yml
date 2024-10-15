@@ -17,6 +17,11 @@ application:
       nitrogen: 35
       phosphorus: 15
       potassium: 26
+farm:
+  fields:
+    pageSize: 15
+    points:
+      pageSize: 25
 spring:
   datasource:
 #    url: jdbc:postgresql://localhost:5432/mybase
@@ -31,3 +36,15 @@ spring:
       ddl-auto: update
 #      ddl-auto: create
     show-sql: true
+  thymeleaf:
+    extras:
+      springsecurity6:
+        enabled: true
+#---
+#spring:
+#  profiles: prod
+#
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/mybase
+#    username: mybase
+#    password: secret

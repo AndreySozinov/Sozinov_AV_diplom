@@ -14,6 +14,7 @@ import ru.savrey.Sozinov_AV_diplom.JUnitSpringBootBase;
 import ru.savrey.Sozinov_AV_diplom.model.Farm;
 import ru.savrey.Sozinov_AV_diplom.model.Field;
 import ru.savrey.Sozinov_AV_diplom.model.Point;
+import ru.savrey.Sozinov_AV_diplom.model.User;
 import ru.savrey.Sozinov_AV_diplom.repository.FarmRepository;
 import ru.savrey.Sozinov_AV_diplom.repository.FieldRepository;
 import ru.savrey.Sozinov_AV_diplom.repository.PointRepository;
@@ -39,7 +40,7 @@ public class PointControllerTest extends JUnitSpringBootBase {
     @BeforeEach
     void tearUp() {
         // Fill up the database before each test
-        Farm farm = farmRepository.save(new Farm("Farm1"));
+        Farm farm = farmRepository.save(new Farm(new User(), "Farm1"));
         Field field = fieldRepository.save(new Field(farm, 42));
         pointRepository.saveAll(List.of(
                 new Point(field, 55.5, 66.5, LocalDate.now()),
@@ -50,7 +51,7 @@ public class PointControllerTest extends JUnitSpringBootBase {
 
     @Test
     void testFindByIdSuccess() {
-        Farm farm = farmRepository.save(new Farm("Farm2"));
+        Farm farm = farmRepository.save(new Farm(new User(), "Farm2"));
         Field field = fieldRepository.save(new Field(farm, 256));
         Point expected = pointRepository.save(new Point(field, 55.6, 62.4, LocalDate.now()));
 

@@ -9,7 +9,7 @@ public class UserRequest {
     private String patronymic;
     private String phone;
     private String email;
-    private Roles role;
+    //private Roles role;
     private String login;
     private String password;
 }
